@@ -3,6 +3,8 @@ package com.example.task2.service;
 import com.example.task2.dto.CategoryResponseDTO;
 import com.example.task2.model.Category;
 import com.example.task2.repository.CategoryRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
+    private static final Logger logger = LoggerFactory.getLogger(CategoryService.class);
 
     private final CategoryRepository categoryRepository;
 
@@ -20,14 +23,17 @@ public class CategoryService {
     }
 
     public Category saveCategory(Category category) {
+        logger.info("Inside CategoryService :: saveCategory {}", category);
         return categoryRepository.save(category);
     }
 
     public Category getCategoryById(Long id) {
+        logger.info("Inside CategoryService :: getCategoryById {}", id);
         return categoryRepository.findById(id).orElse(null);
     }
 
     public List<CategoryResponseDTO> getAllCategories() {
+        logger.info("Inside CategoryService :: getAllCategories");
         List<Category> categories= categoryRepository.findAll();
         Map<Long, List<Category>> categoryMap = categories.stream()
                 .filter(category -> category.getParentId()!=0)
